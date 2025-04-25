@@ -15,22 +15,20 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("deep_research.log"),
+        logging.FileHandler("multiagent.log"),
         logging.StreamHandler()
     ]
 )
-logger = logging.getLogger("deep_research")
+logger = logging.getLogger("multiagent")
 
 # Initialize FastMCP server
-mcp = FastMCP("deep_research")
+mcp = FastMCP("multiagent")
 
 # 環境変数の確認
 if not os.environ.get("OPENAI_API_KEY"):
     logger.error("警告: OPENAI_API_KEY環境変数が設定されていません。")
 elif not os.environ.get("HF_TOKEN"):
     logger.error("警告: HF_TOKEN環境変数が設定されていません。")
-elif not os.environ.get("SERPER_API_KEY"):
-    logger.error("警告: SERPER_API_KEY環境変数が設定されていません。")
 
 # ブラウザを操作するAgent
 agent = create_agent(model_id="gpt-4.1")

@@ -13,7 +13,7 @@
     -   各スペシャリストからの報告を統合し、最終的な結論や解決策を提示します。
 -   **MCP サーバー:**
     -   `fastmcp` を使用して、MCP サーバーとして機能します。
-    -   Cursor IDE などの MCP クライアントから `multiagent_thinking` ツールとして呼び出すことができます。
+    -   Cursor IDE などの MCP クライアントから `multiagent.multiagent_thinking` ツールとして呼び出すことができます。
 
 ## 要件
 
@@ -22,14 +22,13 @@
 -   以下の API キー:
     -   OpenAI API キー (`OPENAI_API_KEY`)
     -   HuggingFace トークン (`HF_TOKEN`)
-    -   (オプション) Serper API キー (`SERPER_API_KEY`): スペシャリストエージェントが Web 検索を行う場合
 
 ## インストール
 
 1.  リポジトリをクローンします:
     ```bash
-    git clone <リポジトリのURL>
-    cd multiagents-mcp # ディレクトリ名は適宜変更してください
+    git clone https://github.com/Hajime-Y/multiagents-thinking.git
+    cd multiagents-thinking
     ```
 
 2.  仮想環境を作成し、依存関係をインストールします:
@@ -39,7 +38,7 @@
     # .venv\Scripts\activate # Windows の場合
     uv sync
     ```
-    (現時点での主な依存関係: `smolagents`, `fastmcp`, `python-dotenv`, `litellm`, `openai`)
+    (依存関係は `pyproject.toml` で管理されています)
 
 ## 環境変数
 
@@ -48,7 +47,6 @@
 ```dotenv
 OPENAI_API_KEY=your_openai_api_key
 HF_TOKEN=your_huggingface_token
-# SERPER_API_KEY=your_serper_api_key # 必要に応じて設定
 ```
 
 ## 使い方
@@ -56,21 +54,21 @@ HF_TOKEN=your_huggingface_token
 MCP サーバーを起動します:
 
 ```bash
-uv run python multiagents.py
+uv run python -m src.multiagents
 ```
 
-これにより、`deep_research` という名前のエージェント (MCP サーバー) が起動します。MCP クライアント (Cursor IDE など) から `deep_research.multiagent_thinking` ツールを呼び出すことで、マルチエージェント思考プロセスを実行できます。
+これにより、`multiagent` という名前のエージェント (MCP サーバー) が起動します。MCP クライアント (Cursor IDE など) から `multiagent.multiagent_thinking` ツールを呼び出すことで、マルチエージェント思考プロセスを実行できます。
 
 **例 (Cursor IDE での呼び出し):**
 
 ```
-@deep_research.multiagent_thinking 新しいオンライン教育プラットフォームの設計方針について、学習科学、データ駆動、社会的学習の3つの観点から分析し、具体的なアイデアを提案してください。
+@multiagent.multiagent_thinking 新しいオンライン教育プラットフォームの設計方針について、学習科学、データ駆動、社会的学習の3つの観点から分析し、具体的なアイデアを提案してください。
 ```
 
 ## 主要コンポーネント
 
--   `multiagents.py`: MCP サーバーのエントリーポイント。`multiagent_thinking` ツールを定義。
--   `create_agent.py`: マザーエージェントとスペシャリストエージェントのプロンプト生成、およびエージェントの作成ロジック (`run_specialist_agents` ツールを含む)。
+-   `src/multiagents.py`: MCP サーバーのエントリーポイント。`multiagent_thinking` ツールを定義。
+-   `src/create_agent.py`: マザーエージェントとスペシャリストエージェントのプロンプト生成、およびエージェントの作成ロジック (`run_specialist_agents` ツールを含む)。
 
 ## ライセンス
 
