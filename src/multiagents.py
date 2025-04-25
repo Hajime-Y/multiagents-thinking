@@ -4,6 +4,8 @@ from mcp.server.fastmcp import FastMCP
 from dotenv import load_dotenv
 import logging
 import datetime
+import io
+import contextlib
 
 from create_agent import create_agent
 
@@ -67,12 +69,21 @@ async def multiagent_thinking(task_description: str) -> str:
     logger.info(f"タスク詳細: {task_description}")
     
     try:
-        # Open Deep Researchのエージェントによる調査の実行
-        result = agent.run(task_description)
-        
+        # 標準出力をキャプチャするための StringIO オブジェクト
+        stdout_capture = io.StringIO()
+
+        # agent.run() の標準出力をキャプチャ
+        with contextlib.redirect_stdout(stdout_capture):
+            result = agent.run(task_description)
+
+        # キャプチャした標準出力をログに出力
+        captured_output = stdout_capture.getvalue()
+        if captured_output:
+            logger.info(f"Agent stdout:\n{captured_output.strip()}") # strip() を追加して余分な空白を削除
+
         # ログに回答を記録
         logger.info(f"タスク実行完了: {task_description}")
-        
+
         return result
     
     except Exception as e:
