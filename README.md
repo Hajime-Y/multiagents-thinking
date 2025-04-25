@@ -65,6 +65,31 @@ uv run python -m src.multiagents
 @multiagent.multiagent_thinking 新しいオンライン教育プラットフォームの設計方針について、学習科学、データ駆動、社会的学習の3つの観点から分析し、具体的なアイデアを提案してください。
 ```
 
+### Claude Desktop での使用
+
+Claude Desktop でこの MCP サーバーを使用するには、設定ファイル（通常 `~/.config/Claude/claude_desktop_config.json` 等）に以下のような設定を追加します。
+
+```json
+{
+  "mcpServers": {
+    "multiagent": {
+      "command": "/PATH/TO/YOUR/uv", // あなたの環境の uv への絶対パス
+      "args": [
+        "--directory",
+        "/YOUR/ABSOLUTE/PATH/TO/multiagents-thinking", // このプロジェクトディレクトリへの絶対パス
+        "run",
+        "python",
+        "-m",
+        "src.multiagents"
+      ]
+    }
+  }
+}
+```
+
+- `/PATH/TO/YOUR/uv` は、`uv` 実行ファイルの絶対パスに置き換えてください (`which uv` コマンド等で確認できます)。
+- `/YOUR/ABSOLUTE/PATH/TO/multiagents-thinking` は、このプロジェクト (`multiagents-thinking` ディレクトリ) の絶対パスに置き換えてください。
+
 ## 主要コンポーネント
 
 -   `src/multiagents.py`: MCP サーバーのエントリーポイント。`multiagent_thinking` ツールを定義。
